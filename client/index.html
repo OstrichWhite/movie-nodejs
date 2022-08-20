@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- bootstrap table -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.css">
+  <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+</head>
+<body>
+  <div class="container-fluid">
+      <h2>Movie Database</h2>
+ 
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="signup " id="signup_div">
+          <form class="form-inline">
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_sign_name" placeholder="Enter Name">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_sign_email" placeholder="Enter Email (unique)">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_sign_password" placeholder="Enter Password">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_sign_password2" placeholder="Confirm Password">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <button type="button" id="btn_movie" class="btn btn-primary mb-2" onclick="signUp()">Sign Up</button>
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <button type="button" id="btn_movie" class="btn btn-danger mb-2s" onclick="hide()">x</button>
+            </div>
+          </form>  
+        </div>
+        
+        
+        <div class="login" id="login_div">
+          <form class="form-inline">
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_log_email" placeholder="Enter Email">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <input type="text" class="form-control" id="inp_log_password" placeholder="Enter Password">
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <button type="button" id="btn_movie" class="btn btn-primary mb-2" onclick="login()">Login</button>
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+              <button type="button" id="btn_movie" class="btn btn-danger mb-2s" onclick="hide()">x</button>
+            </div>
+          </form>  
+        </div>
+
+      </div>
+      <div class="col-sm-2">
+        <button class="btn btn-primary mb-2" onclick="showLogin()"><i class='fa fa-sign-in' title="Log In"></i></button>
+        <button class="btn btn-primary mb-2" onclick="showSignUp()"><i class='fa fa-user-plus' title="Sign Up"></i></button>
+        <button class="btn btn-primary mb-2" onclick="logout()"><i class='fa fa-sign-out' title="Log out"></i></button>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10">
+        <form class="form-inline">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="hidden" class="form-control" id="inp_editflag" >
+            <input type="hidden" class="form-control" id="inp_movie_id" >
+            <input type="text" class="form-control" id="inp_movie_name" placeholder="Enter Movie Name">
+          </div>
+          <button type="button" id="btn_movie" class="btn btn-primary mb-2" onclick="addMovie()">Add Movie</button>
+        </form>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10 center">
+        <div class="table table-responsive">
+          <table id='movie_table'>
+      
+          </table>
+        </div>
+      </div>
+      <div class="col-sm-1"></div>
+
+    </div>
+
+  </div>
+</body>
+<script>
+  $(document).ready(()=>{
+      $("#signup_div").hide()
+      $("#login_div").hide()
+  })
+  function hide(){
+    $("#signup_div").hide()
+    $("#login_div").hide()
+  }
+  function showLogin(){
+    $("#signup_div").hide()
+    $("#login_div").show()
+  }
+  function showSignUp(){
+    $("#signup_div").show()
+    $("#login_div").hide()
+  }
+
+  function signUp(){
+    
+    $.ajax({
+      url: `http://localhost:3000/api/v1/users/signup`,
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data:JSON.stringify({
+        name: $('#inp_sign_name').val(),
+        email: $('#inp_sign_email').val(),
+        password: $('#inp_sign_password').val(),
+        passwordConfirm: $('#inp_sign_password2').val(),
+      }),
+      success: function(data) {
+        localStorage.setItem('token',data.token)
+        $('#inp_sign_name').val('')
+        $('#inp_sign_email').val('')
+        $('#inp_sign_password').val('')
+        $('#inp_sign_password2').val('')
+        $("#signup_div").hide()
+        $("#login_div").hide()
+        alert('Sign Up Success')
+      } 
+    });
+
+  }
+
+  function login(){
+    
+    $.ajax({
+      url: `http://localhost:3000/api/v1/users/login`,
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data:JSON.stringify({
+        email: $('#inp_log_email').val(),
+        password: $('#inp_log_password').val()
+      }),
+      success: function(data) {
+        localStorage.setItem('token',data.token)
+        $('#inp_log_email').val('')
+        $('#inp_log_password').val('')
+        $("#signup_div").hide()
+        $("#login_div").hide()
+        alert('Login Success')
+      } 
+    });
+
+  }
+
+  function logout(){
+    localStorage.removeItem('token')
+    alert('Logout success')
+  }
+function editMovie(id,name){
+  $('#inp_movie_name').select().focus()
+  $('#inp_movie_id').val(id)
+  $('#inp_movie_name').val(name)
+  $('#inp_editflag').val(1)
+  $('#btn_movie').html('Update Movie')
+}
+
+function addMovie(){
+  let token = localStorage.getItem('token')
+  let movieName = $('#inp_movie_name').val()
+  let editflag = $('#inp_editflag').val()
+  let movieId = $('#inp_movie_id').val()
+  if(!movieName){
+    alert('Enter Movie Name')
+    $('#inp_movie_name').select().focus();
+    return
+  }
+
+  if(editflag=='1'){
+    $.ajax({
+      url: `http://localhost:3000/api/v1/movies/${movieId}`,
+      type: "PATCH",
+      contentType: "application/json",
+      dataType: "json",
+      data:JSON.stringify({
+        name: movieName
+      }),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      },
+      success: function(data) {
+        $("#movie_table").bootstrapTable('refresh')
+        $('#inp_movie_id').val('')
+        $('#inp_movie_name').val('')
+        $('#inp_editflag').val('')
+        $('#btn_movie').html('Add Movie')
+      } 
+    });
+
+  }
+  else{
+    $.ajax({
+      url: "http://localhost:3000/api/v1/movies",
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      data:JSON.stringify({
+        name: movieName
+      }),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      },
+      success: function(data) {
+        localStorage.setItem("token",data);
+      } 
+    });
+  }
+}
+
+
+function deleteMovie(id,name){
+  let token = localStorage.getItem('token')
+  if(!confirm(`Do you want to delete ${name}`)){
+    return
+  }
+    $.ajax({
+      url: `http://localhost:3000/api/v1/movies/${id}`,
+      type: "DELETE",
+      // contentType: "application/json",
+      // dataType: "json",
+      // data:JSON.stringify({
+      //   name: movieName
+      // }),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      },
+      success: function(data) {
+          $("#movie_table").bootstrapTable('refresh')
+      } 
+    });
+}
+function toggleLike(id){
+  let token = localStorage.getItem('token')
+  
+    $.ajax({
+      url: `http://localhost:3000/api/v1/likes/${id}/toggle`,
+      type: "POST",
+      // contentType: "application/json",
+      // dataType: "json",
+      // data:JSON.stringify({
+      //   name: movieName
+      // }),
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      },
+      success: function(data) {
+          $("#movie_table").bootstrapTable('refresh')
+      } 
+    });
+}
+
+
+</script>
+
+
+
+<script>
+
+  var i=0
+  $("#movie_table").bootstrapTable({
+      url: "http://localhost:3000/api/v1/movies",
+      responseHandler: function (res) {
+        console.log(res.data.data)
+        return res.data.data
+      },
+      search: true,
+      pagination: true,
+      pageSize: 10,
+      virtualScroll: true,
+      height: 500,
+      pageList: [ 10, 20, 50, "all"],
+      columns: [{
+        title: "S No",
+        width: 50,
+        formatter: (value, row, index) => {
+         return index - (-1);
+        }
+      }, {
+          field: "name",
+          sortable: true,
+          title: "Movie Name",
+          width: 250,
+          // formatter: (value, row, index) => {
+          //     let gstno = (row['gstno'] == "") ? "" : `<i >GSTIN : ${row['gstno']}</i>`;
+          //     return `<b>${row['customername']}</b>`;
+          // }
+      }, 
+      {
+        title: "Vote",
+        width: 20,
+        formatter: (value,row)=>{
+          return `<button class='btn btn-primary m-1' onclick="toggleLike('${row['_id']}')"><i class='fa fa-thumbs-up'></i></button>`
+        }
+      },
+      {
+          field: "votes",
+          title: "Votes",
+          sortable: true,
+          width: 50,
+
+      }, {
+          title: "Action",
+          width: 100,
+          align: "center",
+          formatter: (value, row) => {
+              return `
+              <button class='btn btn-primary m-1' onclick="editMovie('${row['_id']}','${row['name']}')"><i class='fa fa-edit'></i></button>
+              <button class='btn btn-danger m-1' onclick="deleteMovie('${row['_id']}','${row['name']}')"><i class='fa fa-trash'></i></button>`;
+          }
+      }]
+  })
+
+
+</script>
+</html>
